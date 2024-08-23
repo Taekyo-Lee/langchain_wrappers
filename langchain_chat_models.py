@@ -2,7 +2,9 @@ import os
 from dotenv import load_dotenv
 from typing import Optional
 from langchain_openai import ChatOpenAI
+import inspect
 
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) , '.env'))
 
 class MyChatOpenAI:
     @classmethod
@@ -25,7 +27,7 @@ class MyChatOpenAI:
         else:
             raise ValueError(f"Model {model} is currently not supported. Supported models are: ['gpt-4o', 'gpt-4o-mini']")
 
-        load_dotenv()
+        
         return ChatOpenAI(
             openai_api_key=os.getenv("OPENAI_API_KEY"), 
             model=model,

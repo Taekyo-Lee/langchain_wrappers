@@ -2,7 +2,9 @@ import os
 from dotenv import load_dotenv
 from typing import Optional
 from langchain_openai.embeddings import OpenAIEmbeddings
+import inspect
 
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) , '.env'))
 
 class MyOpenAIEmbeddings:
     @classmethod
@@ -24,7 +26,7 @@ class MyOpenAIEmbeddings:
         else:
             raise ValueError(f"Model {model} is currently not supported. Supported models are: ['text-embedding-3-small', 'text-embedding-3-large']")
 
-        load_dotenv()
+        
         return OpenAIEmbeddings(
             openai_api_key=os.getenv("OPENAI_API_KEY"), 
             model=model,
