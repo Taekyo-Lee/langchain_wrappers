@@ -6,20 +6,27 @@ import inspect
 
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) , '.env'))
 
+if not os.getenv('LANGSMITH_PROJECT'):
+    os.environ['LANGSMITH_PROJECT'] = 'default'
+    print("'LANGSMITH_PROJECT' is set to 'default' by default.")
+
 class MyChatOpenAI:
     @classmethod
     def from_model(
         cls, 
         model: str = 'gpt-4o-mini',
         *,
-        langsmith_project: str = 'default',
+        langsmith_project: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: Optional[int] = 4096,
         max_retries: int = 1,
         **kwargs
         )-> ChatOpenAI:
-        
-        os.environ['LANGCHAIN_PROJECT'] = langsmith_project
+
+        if langsmith_project:
+            os.environ['LANGSMITH_PROJECT'] = langsmith_project
+            print(f"'LANGSMITH_PROJECT' is set to {langsmith_project}.")
+
         if model in ['gpt-4o', 'GPT-4o', 'GPT-4O', 'gpt-4O', 'gpt4o', 'GPT4o', 'GPT4O', 'gpt4O']:
             model = 'gpt-4o'
         elif model in ['gpt-4o-mini', 'GPT-4o-mini', 'GPT-4O-mini', 'gpt-4O-mini', 'gpt4o-mini', 'GPT4o-mini', 'GPT4O-mini', 'gpt4O-mini', 'gpt4omini', 'GPT4omini', 'GPT4Omini', 'gpt4Omini']:

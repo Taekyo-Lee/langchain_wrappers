@@ -5,6 +5,8 @@ from langchain_openai.embeddings import OpenAIEmbeddings
 import inspect
 
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) , '.env'))
+if not os.getenv('LANGSMITH_PROJECT'):
+    os.environ['LANGSMITH_PROJECT'] = 'default'
 
 class MyOpenAIEmbeddings:
     @classmethod
